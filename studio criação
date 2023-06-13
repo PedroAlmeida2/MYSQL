@@ -1,0 +1,90 @@
+CREATE DATABASE studio
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf8_general_ci;
+===========================================================================================
+USE studio;
+===========================================================================================
+CREATE TABLE CLIENTE
+(
+    ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOME varchar(100) NOT NULL,
+    CPF VARCHAR(11) NOT NULL,
+    TEL VARCHAR(15) NOT NULL,
+    EMAIL VARCHAR(100),
+    ENDERECO VARCHAR(150) NOT NULL
+    DATA_INSCRICAO DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+);
+===========================================================================================
+CREATE TABLE PRODUTO
+(
+    ID INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOME VARCHAR(100) NOT NULL,
+    DESCRICAO VARCHAR(200),
+    PRECO DECIMAL(10,2) NOT NULL,
+	  QUANTIDADE INT(11)
+);
+===========================================================================================
+CREATE TABLE SERVICO
+(
+    ID INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOME VARCHAR(45) NOT NULL,
+    DESCRICAO VARCHAR(300),
+    preco decimal(10,2) not null
+);
+===========================================================================================
+CREATE TABLE carrinho
+(
+    ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FK_CLIENTE_ID INT NOT NULL,
+    FK_PRODUTO_ID INT NOT NULL,
+    DATA DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (FK_CLIENTE_ID) REFERENCES CLIENTE(ID),
+    FOREIGN KEY (FK_PRODUTO_ID) REFERENCES PRODUTO(ID)
+);
+===========================================================================================
+CREATE TABLE AGENDAMENTO
+(
+    ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FK_CLIENTE_ID INT NOT NULL,
+    FK_SERVICO_ID INT NOT NULL,
+    DATA_AGENDAMENTO DATE NOT NULL,
+    HORA_AGENDAMENTO TIME NOT NULL,
+	FOREIGN KEY (FK_CLIENTE_ID) REFERENCES CLIENTE(ID),
+    FOREIGN KEY (FK_SERVICO_ID) REFERENCES SERVICO(ID)
+);
+===========================================================================================
+CREATE TABLE funcionarios
+(
+  ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  NOME VARCHAR(100) NOT NULL,
+  SOBRENOME VARCHAR(100) NOT NULL,
+  EMAIL VARCHAR(100) NOT NULL,
+  DATA_NASCIMENTO DATE,
+  CPF VARCHAR(14) NOT NULL,
+  ENDERECO VARCHAR(200),
+  CIDADE VARCHAR(100),
+  ESTADO VARCHAR(50),
+  CEP VARCHAR(10),
+  TELEFONE VARCHAR(20),
+  CARGO VARCHAR(100),
+  SALARIO DECIMAL(10, 2),
+  DATA_CONTRATACAO DATE,
+  status ENUM('ativo', 'inativo') DEFAULT 'ativo',
+  DATA_CRIACAO TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  DATA_ATUALIZACAO TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+===========================================================================================
+
+===========================================================================================
+CREATE PROCEDURE cadastroCli
+(
+    CP varchar(11),
+    NM varchar(60),
+    EM VARCHAR(100),
+    EN VARCHAR(100),
+    TE VARCHAR(11)
+)
+INSERT INTO CLIENTE (CPF, NOME, EMAIL, ENDERECO, TEL)
+ VALUES (CP, NM, EM, EN, TE)
+ ===========================================================================================
+ 
