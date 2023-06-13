@@ -78,13 +78,13 @@ CREATE TABLE funcionarios
 ===========================================================================================
 CREATE PROCEDURE cadastroCli
 (
-    CP varchar(11),
-    NM varchar(60),
-    EM VARCHAR(100),
-    EN VARCHAR(100),
-    TE VARCHAR(11)
+    CPF varchar(11),
+    NOME varchar(60),
+    EMAIL VARCHAR(100),
+    ENDERECO VARCHAR(100),
+    TEL VARCHAR(11)
 )
 INSERT INTO CLIENTE (CPF, NOME, EMAIL, ENDERECO, TEL)
- VALUES (CP, NM, EM, EN, TE)
+ VALUES (CPF, NOME, EMAIL, ENDERECO, TEL)
  ===========================================================================================
  
