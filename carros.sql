@@ -1,0 +1,511 @@
+CREATE DATABASE escola;
+//criar base de dados
+
+USE escola;
+//selecionar base de dados
+
+CREATE TABLE aluno(
+	aluno_ra int, 
+	aluno_nome varchar (45),
+	aluno_cpf char (11),
+    aluno_rg char (9),
+PRIMARY KEY (aluno_ra));
+
+DESCRIBE aluno
+//descrever tabelas
+
+SHOW TABLES;
+//mostrar tabelas
+
+INSERT INTO aluno (aluno_ra, aluno_nome, aluno_cpf, aluno_rg) VALUES 
+                  (1, "Giovanna", "01234567899", "123456789");
+//inserir valores na tabela
+
+SELECT *(ColunaTabela) FROM aluno(tabela);
+//selecionar uma tabela
+
+SELECT * (* - ColunaTabela) FROM aluno (tabela) WHERE aluno_ra = 1 (coluna da tabela = valor de busca)
+//selecionar um ou vários registros de uma tabela
+
+---
+
+CREATE TABLE pessoa(
+    pessoaId int not null AUTO_INCREMENT,
+    pessoaNome varchar (45),
+    pessoaNasc date,
+    pessoaSexo ENUM ('m','f'),
+    pessoaPeso decimal (5,2),
+    pessoaAltura decimal (3,2),
+    pessoaNaci varchar (20) DEFAULT 'Brasil',
+    PRIMARY KEY (pessoaId));
+	
+
+INSERT INTO pessoa (pessoaNome, pessoaNasc, pessoaSexo, pessoaPeso, pessoaAltura, PessoaNaci) VALUES
+				   ("Giovanna", '2005-07-09', 'f', 70.10, 1.54, 'Grecia');
+				   
+UPDATE pessoa SET pessoaTel = 11982626740 WHERE pessoaId = 6;
+//alterar uma tabela ja criada
+
+DELETE FROM tabela WHERE coluna = valor;
+//deletar uma linha
+
+===============================================================================================================================
+//BANCO DE DADOS PARA UMA LOJA VIRTUAL.
+
+CREATE DATABASE lojavirtual
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf8_general_ci;
+//criar base de dados e comando para aceitar todos os caracteres evitando erros.
+
+CREATE TABLE tb_produto (
+	PRODUTO_COD INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    PRODUTO_NOME VARCHAR (45) NOT NULL,
+    PRODUTO_PRECO FLOAT (8,2)
+    ) DEFAULT CHARSET = utf8;
+//criar tabela
+	
+CREATE TABLE tb_detalhes_prod (
+    DP_COD INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    DP_DESCRI TEXT NOT NULL,
+    DP_PRODUTO_COD INT NOT NULL,
+    FOREIGN KEY (DP_PRODUTO_COD) REFERENCES tb_produto (PRODUTO_COD)
+    ) DEFAULT CHARSET = utf8;
+//criar outra tabela e fazer referencia com a primeira usando uma chave estrangeira
+
+DESCRIBE tb_produto
+//descrever a tabela
+
+INSERT INTO tb_produto (produto_nome, produto_preco) 
+	VALUES (
+    'iPhone 11 128GB Preto ', 4500.00
+    )
+    
+	
+INSERT INTO tb_produto (produto_nome, produto_preco) 
+	VALUES (
+    'Samsung Galaxy 128GB Branco ', 3999.00
+    )
+	
+SELECT * FROM tb_produto;
+//mostrar os conteudos da tabela 
+
+INSERT INTO tb_produto (produto_nome, produto_preco) 
+	VALUES (
+    'Apple iPhone 13 Pro 256GB Azul Sierra ', 7999.00
+    ),
+    
+    ('Apple iPhone 11 Pro 64GB Verde ', 3780.00),
+    
+    ('Apple iPhone 12 256GB Roxo ', 5299.00)
+	
+//sintaxe para add mais de um produto
+
+INSERT INTO tb_detalhes_prod (DP_DESCRI, DP_PRODUTO_COD) 
+	VALUES ( 'O Apple iPhone 11 usa o sistema operacional IOS 14', '1')
+ //inserir descrição na tabela tb_detalhes_prod e utilizar o DP_PRODUTO_COD
+//para indicar para qual produto será essa descrição  
+		
+CREATE TABLE tb_cliente (
+    CLIENTE_COD INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    CLIENTE_NOME VARCHAR (45) NOT NULL,
+    CLIENTE_CPF VARCHAR (15),
+    CLIENTE_DTNASC DATE,
+    CLIENTE_SEXO ENUM ('M','F')
+    ) DEFAULT CHARSET = utf8;
+//criar tabela cliente
+	
+CREATE TABLE tb_pedido (
+    PEDIDO_COD INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    PEDIDO_COD_CLI INT NOT NULL,
+    FOREIGN KEY (PEDIDO_COD_CLI) REFERENCES tb_cliente (CLIENTE_COD),
+    DATA_HORA DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+//criar tabela pedido com chave estrangeira da tabela clientes
+
+CREATE TABLE PEDIDO_ITENS (
+    ITENS_PRODUTO_COD INT NOT NULL,
+    ITENS_PEDIDO_COD INT NOT NULL,
+    FOREIGN KEY (ITENS_PRODUTO_COD) REFERENCES tb_produto (PRODUTO_COD),
+    FOREIGN KEY (ITENS_PEDIDO_COD) REFERENCES tb_pedido (PEDIDO_COD)
+);
+//criar tabela pedidos itens co 2 chaves estrangeira, sendo 1 da tabela "TB_PRODUTO" e outra da "TB_PEDIDO".
+
+INSERT INTO tb_cliente (cliente_nome, cliente_cpf, cliente_dtnasc, cliente_sexo) 
+VALUES ('Giovanna Anacleto dos Santos', '47052918838', '2005-07-09', 'F'),
+('Daniel Felipe Anacleto dos Santos', '47886923830', '2013-05-19', 'M'),
+('Daianna Agilda da Silva Anacleto', '37895076824', '1981-03-12', 'F'),
+('Alberto Pereira dos Santos', '97864534526', '1980-03-14', 'M'),
+('Ravi Lucca Souza Landim', '43467859078', '2022-03-02', 'M'),
+('Rayssa dos Santos Sales Fogaça', '96084765342', '2006-01-23', 'F'),
+('Thauany Caroliny Pereira', '12367589709', '2006-03-11', 'F'),
+('Roger Guedes', '90786946578', '1981-03-12', 'M'),
+('Damiana Paula da Silva Anacleto', '24536758904', '1995-05-19', 'F'),
+('Leandro Pereira Souza', '68563749079', '2000-01-26', 'M');
+//criar 10 clientes na tabela tb_cliente
+
+INSERT INTO tb_pedido (PEDIDO_COD_CLI) VALUES 
+('1'),
+('2'),
+('3'),
+('4'),
+('5'),
+('6'),
+('7'),
+('8'),
+('9'),
+('10');
+
+
+INSERT INTO pedido_itens (ITENS_PRODUTO_COD, ITENS_PEDIDO_COD) VALUES 
+('1','1'),
+('2','2'),
+('3','3'),
+('4','4'),
+('5','5'),
+('6','6'),
+('7','7'),
+('8','8'),
+('9','9'),
+('10','10');
+
+====================================================================================
+CREATE DATABASE testeconst;
+//criar banco de dados
+
+CREATE TABLE teste (
+    id INT NOT NULL,
+    nome varchar (45),
+    valor float (5,2));
+//criar tabela
+	
+DESC teste;
+//describe - desc, descrever a tabela
+
+INSERT INTO teste (nome, valor) VALUES
+				('Paulo', 100.00)
+//inserir valores na tabela
+
+SELECT * FROM teste;
+//mostrar o que tem na tabela após o valor inserido
+
+INSERT INTO teste (id, nome, valor) VALUES
+				(1000, NULL, 100)
+
+INSERT INTO teste VALUES (NULL, 'Pedro', 800);
+
+INSERT INTO teste (id) VALUES (2);
+
+ALTER TABLE teste ADD COLUMN rg VARCHAR (11) UNIQUE;
+
+INSERT INTO teste VALUES (4, 'Juliana', 200.00, '47052918838');
+
+INSERT INTO teste VALUES (6, 'Juliana', 200.00, '07092005097');
+
+INSERT INTO teste VALUES (7, 'Julia', 200.00, '07092005097');
+//provocar erro para entender a unique key
+
+=====================================================================================
+CREATE DATABASE projeto1
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf8_general_ci;
+
+CREATE TABLE aluno (
+    aluno_cod INT NOT NULL AUTO_INCREMENT,
+    aluno_nome VARCHAR (45) NOT NULL,
+    aluno_nasc DATE,
+    aluno_sexo ENUM ('M', 'F'),
+    aluno_peso DECIMAL (5,2),
+    aluno_altura DECIMAL (3,2),
+    aluno_nacional VARCHAR (20) DEFAULT 'Brasil',
+    PRIMARY KEY (aluno_cod))
+    DEFAULT CHARSET = utf8;
+	
+CREATE TABLE curso (
+    curso_id INT NOT NULL AUTO_INCREMENT,
+    curso_nome VARCHAR (45) NOT NULL,
+    curso_inicio DATE,
+    curso_final DATE,
+    curso_prof VARCHAR (45) NOT NULL,
+    curso_preco DECIMAL (6,2),
+    PRIMARY KEY (curso_id))
+    DEFAULT CHARSET = utf8;
+
+CREATE TABLE matricula (
+    matricula_cod INT NOT NULL AUTO_INCREMENT,
+    matricula_data  DATE,
+    curso INT,
+    aluno INT,
+    PRIMARY KEY (matricula_cod),
+    FOREIGN KEY (curso) REFERENCES curso (curso_id),
+    FOREIGN KEY (aluno) REFERENCES aluno(aluno_cod));
+	
+					  
+    INSERT INTO aluno (aluno_nome, aluno_nasc, aluno_sexo, aluno_peso, aluno_altura) VALUES
+    				  ('Giovanna', '2005-07-09', 'F', '69', '1.54');
+                      
+    INSERT INTO curso (curso_nome, curso_inicio, curso_final, curso_prof, curso_preco) VALUES
+    				  ('Ingles', '2023-06-12', '2023-08-31', 'Guilherme', '950.00');
+                      
+     INSERT INTO matricula (matricula_data,curso, aluno) VALUES 
+    					   ('2023-06-12', '1', '6');
+						   
+SELECT 9+1;
+SELECT 9-1;
+SELECT 9*1;
+SELECT 5/2;
+SELECT 5 MOD 2;
+SELECT 5 DIV 2;
+SELECT 2*10/2;
+SELECT (10+10)/2;						   
+
+SELECT curso_nome, curso_preco * 2 as 'preco_dobro' from curso;
+
+SELECT curso_nome, curso_preco + (15/100) * curso_preco as 'preco_juros' from curso;
+
+SELECT curso_nome, curso_preco - (15/100) * curso_preco as 'preco_juros' from curso;
+
+CREATE PROCEDURE verPreco (cursoid INT)
+SELECT (curso_preco) as preco
+FROM curso
+WHERE curso_id = cursoid;
+
+CALL verPreco (1);
+
+=================================================================
+CREATE DATABASE test;
+
+CREATE TABLE test (
+    test_cod INT PRIMARY KEY AUTO_INCREMENT,
+    test_nome VARCHAR (45));
+	
+INSERT INTO test (test_nome) VALUES 
+				 ('Giovanna'),
+				 ('Thauany'),
+			     ('Rayssa');
+
+DELETE FROM test WHERE test_cod = 1
+//deleta o registro
+
+RENAME TABLE test to teste2
+//renomeia a tabela 
+
+CREATE PROCEDURE verNome (cod INT)
+SELECT CONCAT ('Nome do teste:', test_nome) as nome
+FROM teste2 WHERE test_cod = cod;
+
+CALL verNome (2);
+
+CREATE PROCEDURE verCod (cod INT)
+SELECT CONCAT ('N° do codigo:', test_cod) as codigo
+FROM teste2 WHERE test_cod = cod;
+
+CALL verCod ();
+
+CREATE PROCEDURE darNome (nome VARCHAR(45))
+INSERT INTO teste2 (test_nome) VALUES (nome)
+
+CALL darNome1 ('Giovanna');
+
+====================================================================================================================
+
+CREATE DATABASE lojaVirtual
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf8_general_ci;
+
+CREATE TABLE tb_produtos (
+    produto_cod INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    produto_nome VARCHAR (200) NOT NULL,
+    produto_valor FLOAT (8,2) NOT NULL); 
+	
+CREATE TABLE tb_detalhes (
+    prod_descricao_cod INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    prod_cod INT NOT NULL,
+    prod_descricao TEXT NOT NULL,
+    FOREIGN KEY (prod_cod) REFERENCES tb_produtos (produtoCod));
+	
+INSERT INTO tb_produtos (produtoNome, produtoValor)
+VALUES ('Dell Intel Core i5, 8GB RAM e 240GB SSD', 3200.00);
+
+INSERT INTO tb_detalhes (prod_descricao, prod_cod)
+VALUES ('O novo Inspiron Dell oferece...', 1);
+
+INSERT INTO tb_produtos (produtoNome, produtoValor)
+VALUES ('Dell Intel Core i7, 8GB RAM e 240GB SSD', 4200.00),
+       ('Dell Intel Core i9, 8GB RAM e 240GB SSD', 5200.00);
+	   
+INSERT INTO tb_detalhes (prod_descricao, prod_cod)
+VALUES ('O novo Inspiron Dell i7 oferece...', 2),
+       ('O novo Inspiron Dell i9 oferece...', 3);
+	   
+CREATE TABLE tb_imagens (
+    prod_imagem INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    prod_cod INT NOT NULL,
+    url_imagem VARCHAR (100) NOT NULL,
+    FOREIGN KEY (prod_cod) REFERENCES tb_produtos (produtoCod));
+
+INSERT INTO tb_imagens (prod_cod, url_imagem) VALUES
+(1, 'IMG1PROD1.jpg'), (1, 'IMG2PROD1.jpg'),
+(2, 'IMG1PROD2.jpg'), (2, 'IMG2PROD2.jpg'),
+(3, 'IMG1PROD3.jpg'), (3, 'IMG2PROD3.jpg');
+
+CREATE TABLE tb_clientes (
+    cliente_cod INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    cliente_nome VARCHAR (100) NOT NULL,
+    cliente_email VARCHAR (100) NOT NULL);
+	
+CREATE TABLE tb_pedidos (
+    pedido_cod INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    cli_cod INT NOT NULL,
+    pedido_data DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (cli_cod) REFERENCES tb_clientes (cliente_cod));
+	
+INSERT INTO tb_clientes (cliente_nome, cliente_email) VALUES 
+('Giovanna', 'gigianacleto09@gmail.com'),
+('Pedro', 'pedro29466@gmail.com'),
+('Lucas', 'ferrilucas80@gmail.com');
+
+CREATE TABLE tb_carrinho (
+    id_pedido INT NOT NULL,
+    id_produto INT NOT NULL,
+    FOREIGN KEY (id_pedido) REFERENCES tb_pedidos (pedido_cod),
+    FOREIGN KEY (id_produto) REFERENCES tb_produtos (produtoCod));
+   
+INSERT INTO tb_pedidos (cli_cod) VALUES (1);
+INSERT INTO tb_carrinho (id_pedido, id_produto) VALUES (1,1);
+
+CREATE VIEW verProdutos 
+AS 
+SELECT produtoCod AS codigo,
+produtoNome AS nome
+FROM tb_produtos
+
+CREATE VIEW verProdutos2 
+AS 
+SELECT produtoCod AS codigo,
+produtoNome AS nome
+FROM tb_produtos
+WHERE produtoCod = 1
+
+SELECT * FROM verProdutos
+SELECT * FROM verProdutos2
+
+CREATE VIEW verCliente
+AS 
+SELECT cliente_cod AS cliCod,
+cliente_nome AS cliNome
+FROM tb_clientes
+
+CREATE VIEW verCarrinho
+AS 
+SELECT id_pedido AS pedido,
+id_produto AS produto
+FROM tb_carrinho
+
+CREATE VIEW verDetalhes
+AS 
+SELECT prod_cod AS prodCod,
+prod_descricao AS prodDescricao
+FROM tb_detalhes
+
+SELECT * FROM verCliente
+SELECT * FROM verCarrinho
+SELECT * FROM verDetalhes
+
+CREATE PROCEDURE verPreco (prodid INT)
+SELECT (produtoValor) as preco
+FROM tb_produtos
+WHERE produtoCod = prodid;
+
+CALL verPreco(1);
+
+CREATE PROCEDURE inserirCliente
+(CN VARCHAR(45), CE VARCHAR(100))
+ INSERT INTO tb_clientes (cliente_nome, cliente_email)
+ VALUES (CN, CE)
+ 
+ CALL inserirCliente ('Aurora', 'aurora09@gmail.com');
+ 
+ SELECT * FROM tb_clientes
+ 
+ 
+ 
+ ====================================================================
+ 
+CREATE DATABASE carros
+DEFAULT CHARACTER SET utf8
+DEFAULT COLLATE utf8_general_ci;
+
+CREATE TABLE Proprietario
+(
+    ID_DONO INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOME_DONO VARCHAR(50) NOT NULL,
+    ENDERECO VARCHAR(100) NOT NULL,
+    BAIRRO VARCHAR(100) NOT NULL,
+    CPF VARCHAR(45) NOT NULL,
+    TELEFONE VARCHAR(45) NOT NULL,
+    RG VARCHAR(45) NOT NULL,
+    DATA_NASCIMENTO_PROP DATE NOT NULL
+);
+
+CREATE TABLE Marca
+(
+    ID_VEICULO INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    MARCA VARCHAR(45)
+);
+
+CREATE TABLE Estado
+(
+    ID_ESTADO INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOME_ESTADO VARCHAR(45)
+);
+
+ CREATE TABLE Categoria
+(
+    ID_CATEGORIA INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    CATEGORIA_VEICULO VARCHAR(45)
+);
+
+CREATE TABLE Municipio
+(
+    ID_MUNICIPIO INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOME_MUNICIPIO VARCHAR(45),
+    ESTADO_IDESTADO INT NOT NULL,
+    FOREIGN KEY (ESTADO_IDESTADO) REFERENCES estado(ID_ESTADO)
+);
+
+CREATE TABLE Veiculo
+(
+    ID_VEICULO INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    PLACA_VEICULO VARCHAR(10) NOT NULL,
+    ANO_VEICULO DATE NOT NULL,
+    
+    PROPRIETARIO_IDDONO INT NOT NULL,
+    MARCA_IDVEICULO INT NOT NULL,
+    MUNICIPIO_IDMUNICIPIO INT NOT NULL,
+    MUNICIPIO_ESTADO_IDESTADO INT NOT NULL,
+    CATEGORIA_IDCATEGORIA INT NOT NULL,
+    
+    FOREIGN KEY (PROPRIETARIO_IDDONO) REFERENCES proprietario(ID_DONO),
+    FOREIGN KEY (MARCA_IDVEICULO) REFERENCES marca(ID_VEICULO),
+    FOREIGN KEY (MUNICIPIO_IDMUNICIPIO) REFERENCES municipio(ID_MUNICIPIO),
+    FOREIGN KEY (MUNICIPIO_ESTADO_IDESTADO) REFERENCES municipio(ESTADO_IDESTADO),
+    FOREIGN KEY (CATEGORIA_IDCATEGORIA) REFERENCES categoria(ID_CATEGORIA)
+);
+ 
+ CREATE PROCEDURE inserirProp
+(
+    NOME VARCHAR(45),
+    ENDERECO VARCHAR(100),
+    BAIRRO VARCHAR(100),
+    CPF VARCHAR(45),
+    TELEFONE VARCHAR(45),
+    RG VARCHAR(45),
+    NASCIMENTO DATE
+)
+insert into proprietario (NOME_DONO, ENDERECO, BAIRRO, CPF, TELEFONE, RG, DATA_NASCIMENTO_PROP)
+VALUES (NOME, ENDERECO, BAIRRO, CPF, TELEFONE, RG, NASCIMENTO);
+
+CALL inserirProp ('Pedro Henrique Alcantara de Almeida', 'Avenida sapopemba, 29466', 'São Rafael', '55500066648', '11994462595', '921886495', '2002-07-18');
+ 
+ 
+ ===================================================================================================================
