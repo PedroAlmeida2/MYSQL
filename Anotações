@@ -821,7 +821,7 @@ ADD CONSTRAINT FK_CURSO_COD FOREIGN KEY (CURSO_COD) REFERENCES curso(cursoId);
 ALTER TABLE curso
 MODIFY COLUMN cursoId INT NOT NULL FIRST;
 
-
+========================================================================================================
 
 --CRIAR DATABASE aula
 
@@ -974,3 +974,131 @@ CREATE TABLE CLIENTE
     DATA_CADASTRO DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 ================================================================================================================================================
+
+CREATE FUNCTION TESTE
+(
+a INT,
+b int
+)RETURNS INT RETURN a * b
+
+SLECT TESTE (5,9) AS RESULTADO
+
+CREATE FUNCTION porcentagem
+(
+a INT,
+b int
+)RETURNS DECIMAL(5,2) RETURN a * b / 100
+
+SELECT PORCENTAGEM (10,5) AS 50PC
+
+CREATE FUNCTION verNome
+(
+	a INT
+)
+    RETURNS VARCHAR(50)
+    RETURN
+(
+    SELECT CONCAT('Nome= ', nomeAluno)
+    FROM alunos
+    WHERE idAluno = a
+)
+
+
+CREATE PROCEDURE TESTE() SELECT*
+FROM alunos
+
+CALL TESTE
+
+CREATE PROCEDURE verMensal
+(
+	X INT
+)
+SELECT CONCAT ("Mensalidade= ", MensAluno)
+AS Mensalidade
+From Clientes
+Where idAluno = X
+
+CALL verMensal(2)
+
+CREATE PROCEDURE verMensalNome
+(
+	X INT
+)
+SELECT CONCAT ("Mensalidade= ", MensAluno," Aluno= ",nomeAluno) 
+AS Mensalidade
+FROM alunos
+WHERE idAluno = X
+
+call verMensalNome(15)
+
+SELECT COUNT(DISTINCT MensAluno)
+From Alunos
+
+SELECT *
+FROM alunos
+WHERE sexoAluno
+IN ('M')
+AND MensAluno = 1200
+LIMIT 0,30
+
+SELECT alunos.nomeAluno, curso.curso_nome,curso.curso_inicio
+from alunos
+join curso
+LIMIT 0,30
+
+==================================================================================================================
+
+CREATE DATABASE LOJA;
+
+USE LOJA;
+
+CREATE TABLE CLIENTE
+(
+	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    NOME VARCHAR(45)
+);
+
+CREATE TABLE PEDIDO
+(
+	ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    CLIENTE_ID INT,
+    VALOR FLOAT(8,2),
+    FOREIGN KEY (CLIENTE_ID) REFERENCES CLIENTE(ID)
+);
+
+INSERT INTO CLIENTE(NOME)
+VALUES
+('Pedro Almeida'),
+('Henrique Ferreira'),
+('Giovanna Anacleto'),
+('Lucas Ferri'),
+('David Xurumelas'),
+('Carlos Tamanduá'),
+('Sabrina Viana'),
+('Perse Pedro'),
+('Renan Albion'),
+('Felipe Repolho');
+
+INSERT INTO PEDIDO(CLIENTE_ID, VALOR)
+VALUES
+(1,256),
+(2,570),
+(3,974),
+(4,1.200),
+(5,5.982);
+
+SELECT * FROM CLIENTE JOIN PEDIDO ON
+(CLIENTE.ID = PEDIDO.CLIENTE_ID)
+
+SELECT * FROM CLIENTE LEFT JOIN PEDIDO ON
+(CLIENTE.ID = PEDIDO.CLIENTE_ID)
+
+SELECT * FROM CLIENTE RIGHT JOIN PEDIDO ON
+(CLIENTE.ID = PEDIDO.CLIENTE_ID)
+
+
+
+
+
+
+
